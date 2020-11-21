@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% load static %}
+
+<div class="container">
+
+  <div class="row justify-content-center">
+    Are you sure you want to delete your account?
+    This will delete all your dogs and account information.
+  </div>
+
+  <br/>
+  <br/>
+
+  <div class="row text-center justify-content-center">
+    <form action="delete_account" method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" class="btn btn-danger" value="DELETE">
+    </form>
+  </div>
+
+</div>
+
+
+{% endblock content %}

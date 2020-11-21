@@ -1,0 +1,22 @@
+version: '2.0'
+services:
+  dev_postgres:
+    build: dev_postgres/.
+    environment:
+    - POSTGRES_PASSWORD=doggosecretpassword
+    ports:
+    - "5432:5432"
+    networks:
+    - doggo_postgres
+  doggo:
+    build: .
+    ports:
+    - "8000:8000" # http directly to django
+    networks:
+    - doggo_postgres
+    command: ["bash", "entrypoint.sh", "dev.env"]
+    depends_on:
+    -  dev_postgres
+
+networks:
+  doggo_postgres:

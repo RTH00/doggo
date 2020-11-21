@@ -1,0 +1,23 @@
+{% load utils %}
+{{ value|multiply:100.0|stringformat:"f"|slice:":4" }}%
+{% if inverted %}
+    {% if value >= 0.75 %}
+        {% include 'icons/double_bad.html' %}
+    {% elif value >= 0.5 %}
+        {% include 'icons/bad.html' %}
+    {% elif value >= 0.25 %}
+        {% include 'icons/good.html' %}
+    {% else %}
+        {% include 'icons/double_good.html' %}
+    {% endif %}
+{% else %}
+    {% if value >= 0.75 %}
+        {% include 'icons/double_good.html' %}
+    {% elif value >= 0.5 %}
+        {% include 'icons/good.html' %}
+    {% elif value >= 0.25 %}
+        {% include 'icons/bad.html' %}
+    {% else %}
+        {% include 'icons/double_bad.html' %}
+    {% endif %}
+{% endif %}

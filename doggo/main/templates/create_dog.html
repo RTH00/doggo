@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% load static %}
+<div class="container">
+    <div class="row justify-content-center">
+        <h2 class="title">Adopt a dog!</h2>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-sm-3 order-1 order-sm-1">
+            <div class="mt-3">
+                <h5 class="text-center"> Golden Retriever</h5>
+                A good boy! Playful, kind, loving water, a  Golden Retriever is pure happiness!
+                Don't forget that it requires a lot of affection!
+            </div>
+            <div class="mt-3">
+                <h5 class="text-center">German Shepherd</h5>
+                A good doggo breed! Intelligent, self assured, Deutsche Qualität! This doggo is a
+                proud descendant of Rin Tin Tin. It craves walks and need a lot of them!
+            </div>
+        </div>
+        <div class="col-sm-6 order-3 order-sm-2">
+            <div class="formwrapper text-center mt-3">
+                <img class="img-fluid" src="{% static dog_random_image %}" alt="My image">
+                <form class="mt-3" action="create_dog" method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <input type="submit" class="btn btn-success" value="Woof!">
+                </form>
+            </div>
+        </div>
+        <div class="col-sm-3 order-2 order-sm-3">
+            <div class="mt-3">
+                <h5 class="text-center">Chicken</h5>
+                It's technically not a dog, but you can still do a few things with it.
+                It's the right choice if you are looking for something that looks like a dog (from very far away...)
+                and doesn't need too much care.
+            </div>
+            <div class="mt-3">
+                <h5 class="text-center">Corgi</h5>
+                Also a very good doggo! Compact, attentive, active, this is a big dog on short legs!
+                This little ball of fur will illuminate your day, but needs a good balance of affection and sport.
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

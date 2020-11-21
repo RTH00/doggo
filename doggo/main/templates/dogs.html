@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% load static %}
+
+<div class="container">
+  {% include 'inventory.html' with account=account only %}
+  <div class="row text-center mt-3">
+
+    {% for dog in dogs %}
+    <div class="col-lg-4 col-md-6 mb-4">
+      {% include 'dog_card.html' with dog=dog only %}
+    </div>
+    {% endfor %}
+
+    {% if can_create_dog %}
+    <div class="col-lg-4 col-md-6 mb-4 mt-5">
+      <a class="btn btn-success" href="{% url 'create_dog' %}" role="button">Adopt another dog!</a>
+    </div>
+    {% endif %}
+
+  </div>
+</div>
+
+{% endblock content %}

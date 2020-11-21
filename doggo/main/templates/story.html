@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% load static %}
+
+<div class="row justify-content-sm-center">
+    <div class="col-lg-4 col-md-6 mb-5">
+        {% include 'inventory.html' with account=account only %}
+        <div class="card h-100 mt-3">
+            <div class="card-header">
+                Adventure time!
+            </div>
+            <div class="card-body text-center">
+                {{ story_text }}
+            </div>
+            <ul class="list-group list-group-flush text-center">
+                {% for choice in choices %}
+                <li class="list-group-item">
+                    <a href="{% url 'story_choice' dog_id=dog.id_public choice_id=choice.1 %}" role="button" class="btn btn-success">
+                        {{ choice.0 }}
+                    </a>
+                </li>
+                {% endfor %}
+                <li class="list-group-item">
+                    <a href="{% url 'cancel_story' dog_id=dog.id_public %}" role="button" class="btn btn-danger">
+                        Let's go back home.
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<br/>
+<br/>
+<br/>
+
+{% endblock content %}

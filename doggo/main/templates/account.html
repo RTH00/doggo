@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% load static %}
+
+<div class="container">
+
+  {% include 'inventory.html' with account=account only %}
+
+  <div class="row mt-3 text-center">
+    <div class="col-4">
+      <h5 class="mt-4">Magic Bone</h5>
+      Your Doggo has left? Don't panic, this delicious Magic Bone will bring your Doggo back!
+    </div>
+    <div class="col-4">
+      <h5 class="mt-4">Fitness Cookie</h5>
+      This Fitness Cookie will remove all the fat from one of your Doggo.
+    </div>
+    <div class="col-4">
+      <h5 class="mt-4">Tennis Ball</h5>
+      Doggos love tennis balls! Give this gift to your doggo and WOOF! Full affection!
+    </div>
+  </div>
+
+  <div class="row mt-5 justify-content-center">
+    <h5>Account information</h5>
+  </div>
+
+  <div class="row mb-5">
+    <table class="table table-bordered">
+      <tbody>
+      <tr>
+        <td>created at</td>
+        <td>{{ account.created_at|date:"c" }}</td>
+      </tr>
+      <tr>
+        <td>last seen at</td>
+        <td>{{ account.last_seen_at|date:"c" }}</td>
+      </tr>
+      <tr>
+        <td>last cookie consent at</td>
+        <td>{{ account.cookie_consent_at|date:"c" }}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="row justify-content-center text-center mb-5">
+    <div class="col">
+      <div class="row mb-3">
+        Click the following button to display your secret account link.
+        Take care do not share this link! Anybody using this link can take control of your account.
+        You can use it to access your account easily from multiple browsers and devices but do not share it to other people!
+        You can also save this link in a safe place to have a way to always get your account back, for example,
+        in case you delete your cookies.
+      </div>
+      <div class="row justify-content-center mb-3">
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse-account-link" aria-expanded="false" aria-controls="collapse-account-link">
+          Show my secret account link
+        </button>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-12">
+          <div class="collapse multi-collapse" id="collapse-account-link">
+            <div class="card card-body">
+              <a href="{{ update_account_absolute_link }}">{{ update_account_absolute_link }}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row justify-content-center mb-3">
+    Click the following button to delete all information related to your account:
+  </div>
+
+  <div class="row justify-content-center">
+    <a href="{% url 'delete_account' %}" role="button" class="btn btn-danger">GDPR ME!</a>
+  </div>
+
+</div>
+
+
+{% endblock content %}

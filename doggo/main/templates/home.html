@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-sm-center">
+        <div class="col-lg-4 col-md-4 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    Oh! Look! A random dog!
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <div class="col text-center">
+                            {% if random_dog is not None %}
+                            {% include 'dog_card.html' with dog=random_dog only %}
+                            {% else%}
+                            There is actually no dog...
+                            {% endif %}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            {% if has_no_dog %}
+            <div class="card mt-3">
+                <div class="card-header">
+                    You don't have a dog!
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <div class="col text-center">
+                            <a class="btn btn-success" href="{% url 'create_dog' %}" role="button">Adopt a dog!</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+        <div class="col-lg-8 col-md-8 mb-8">
+            {% if announcements %}
+            <div class="card mb-3">
+                <div class="card-header">
+                    Announcements
+                </div>
+                <ul class="list-group list-group-flush">
+                    {% for announcement in announcements %}
+                    <li class="list-group-item">
+                            {{ announcement }}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+            <div class="card">
+                <div class="card-header">
+                    Latest news
+                </div>
+                <ul class="list-group list-group-flush">
+                    {% for dog_event in dog_events %}
+                    {% if dog_event.type == DogEventType.ADOPTION %}
+                    <li class="list-group-item">
+                        {% if dog_event.dog is None %}
+                        A dog was adopted!
+                        {% else %}
+                        <a href="{% url 'dog' id=dog_event.dog.id_public %}">{{ dog_event.dog.name }}</a> was adopted!
+                        {% endif %}
+                    </li>
+                    {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% load static %}
+<div class="container-fluid">
+    <div class="row justify-content-sm-center text-center mt-5">
+        <div class="col-sm-6">
+            Woof! We need to store purely technical cookies on your browser to make this website works correctly.<br/>
+            This consent is valid for {{ cookie_consent_duration_days }} days.
+            More details are available in our <a href="{% url 'privacy_policy' %}">Privacy policy</a>.<br/>
+            Do you accept our <a href="{% url 'privacy_policy' %}">Privacy policy</a>,
+            our <a href="{% url 'terms_and_conditions' %}">Terms and conditions</a>
+            and that we store cookies in your browser?
+            <form action="cookie_consent" method="post">
+                <input type="submit" class="btn btn-success" value="Yes">
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

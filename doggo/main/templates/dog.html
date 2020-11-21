@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% load static %}
+
+<div class="row justify-content-sm-center">
+    <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card h-100">
+            <img class="card-img-top" src="{{ dog.image_path }}" alt="Your doggo!">
+            <div class="card-body text-center">
+                <h3 class="card-title">{{ dog.name }}</h3>
+                <h5>{{ dog.description_status }}</h5>
+                {% if extended_description_status is not None %}
+                <h6 id="counter" >Looking for {{ dog.name }}...</h6>
+                {% endif %}
+                <a href="{{ dog.url_path }}">public link</a>
+                {% if is_current_owner %}
+                <div class="row mt-1">
+                    {% if left_dog%}
+                    <a href="{% url 'dog' id=left_dog.id_public %}" role="button" class="btn btn-success mr-auto ml-3">{% include 'icons/arrow_left.html' %} Previous</a>
+                    {% endif %}
+                    {% if right_dog%}
+                    <a href="{% url 'dog' id=right_dog.id_public %}" role="button" class="btn btn-success ml-auto mr-3">Next {% include 'icons/arrow_right.html' %}</a>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+            <ul class="list-group">
+                <div class="text-center list-group-item">
+                    <table class="table table-borderless">
+                        <tbody>
+                        <tr>
+                            <td>Age</td>
+                            <td>{{ dog_age }} days</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </ul>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <table class="table table-borderless">
+                        <tbody>
+                        <tr>
+                            <td>happiness</td>
+                            <td>{% include 'icons/property_value_display.html' with value=dog.happiness only %}</td>
+                        </tr>
+                        <tr>
+                            <td>food</td>
+                            <td>{% include 'icons/property_value_display.html' with value=dog.food only %}</td>
+                        </tr>
+                        <tr>
+                            <td>fat</td>
+                            <td>{% include 'icons/property_value_display.html' with value=dog.fat inverted=True only %}</td>
+                        </tr>
+                        <tr>
+                            <td>affection</td>
+                            <td>{% include 'icons/property_value_display.html' with value=dog.affection only %}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </li>
+            </ul>
+            {% if is_current_owner %}
+            <ul class="list-group">
+                {% include 'inventory.html' with account=account only %}
+            </ul>
+            {% endif %}
+            {% if dog.status == DogStatus.AVAILABLE and is_current_owner %}
+            <ul class="list-group">
+                <div class="text-center list-group-item">
+                    <a href="{% url 'feed_dog' id=dog.id_public %}" role="button" class="btn btn-success">Feed</a>
+                </div>
+            </ul>
+            <ul class="list-group">
+                <div class="text-center list-group-item">
+                    <a href="{% url 'walk_dog' id=dog.id_public %}" role="button" class="btn btn-success">Walk</a>
+                </div>
+            </ul>
+            <ul class="list-group">
+                <div class="text-center list-group-item">
+                    <a href="{% url 'play_dog' id=dog.id_public %}" role="button" class="btn btn-success">Play</a>
+                </div>
+            </ul>
+            {% if account.number_fitness_cookie >= 1 %}
+            <ul class="list-group">
+                <div class="text-center list-group-item">
+                    <a href="{% url 'use_fitness_cookie' id=dog.id_public %}" role="button" class="btn btn-success">Use a Fitness Cookie</a>
+                </div>
+            </ul>
+            {% endif %}
+            {% if account.number_tennis_ball >= 1 %}
+            <ul class="list-group">
+                <div class="text-center list-group-item">
+                    <a href="{% url 'use_tennis_ball' id=dog.id_public %}" role="button" class="btn btn-success">Use a Tennis Ball</a>
+                </div>
+            </ul>
+            {% endif %}
+            {% endif %}
+            {% if dog.status == DogStatus.LEFT and is_current_owner and account.number_magic_bone >= 1 %}
+            <ul class="list-group">
+                <div class="text-center list-group-item">
+                    <a href="{% url 'use_magic_bone' id=dog.id_public %}" role="button" class="btn btn-success">Use a Magic Bone</a>
+                </div>
+            </ul>
+            {% endif %}
+            <ul class="list-group">
+                <div class="text-center list-group-item">
+                    <a href="{% url 'dog' id=dog.id_public %}" role="button" class="btn btn-success">Refresh</a>
+                </div>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="row justify-content-sm-center">
+    <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-header">
+                What happened?
+            </div>
+            <ul class="list-group list-group-flush">
+                {% for formatted_dog_action_event in formatted_dog_action_events %}
+                <li class="list-group-item">
+                    {{ formatted_dog_action_event|safe }}
+                </li>
+                {% empty %}
+                <li class="list-group-item">
+                    Nothing... (yet)
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+
+{% if extended_description_status is not None %}
+<script>
+var countDownDate = new Date(new Date().getTime() + {{ extended_description_status.1 }} * 1000.0);
+
+var x = setInterval(function() {
+  var now = new Date().getTime();
+
+  var diff = Math.ceil((countDownDate - now) / 1000);
+  var hours = Math.floor(diff / 3600);
+  diff = diff % 3600
+  var minutes = Math.floor(diff / 60);
+  diff = diff % 60
+  var seconds = Math.floor(diff);
+
+  if (diff < 0) {
+    clearInterval(x);
+    location.reload();
+  } else {
+    var buffer = "{{ extended_description_status.0 }}"
+    if (hours !== 0) {
+      buffer = buffer + hours + " hours "
+    }
+    if (minutes !== 0) {
+      buffer = buffer + minutes + " min "
+    }
+    buffer = buffer + seconds + " sec."
+
+    document.getElementById("counter").innerHTML = buffer
+  }
+}, 1000);
+</script>
+{% endif %}
+
+{% endblock content %}
